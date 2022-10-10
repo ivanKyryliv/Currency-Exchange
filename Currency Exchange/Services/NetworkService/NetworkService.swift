@@ -40,8 +40,7 @@ final class NetworkService {
         urlSession = URLSession(configuration: .default, delegate: nil, delegateQueue: .main)
     }
     
-    // MARK: - Private
-    private func performApiRequest<T>(_ model: RequestBuilder, completion: @escaping (Result<ApiResponse<T>>) -> Void) {
+    func performApiRequest<T>(_ model: RequestBuilder, completion: @escaping (Result<ApiResponse<T>>) -> Void) {
         let request = model.build()
         let dataTask = urlSession.dataTask(with: request) { data, response, error in
             guard let httpUrlResponse = response as? HTTPURLResponse else {
@@ -67,5 +66,4 @@ final class NetworkService {
         }
         dataTask.resume()
     }
-    
 }

@@ -9,4 +9,5 @@ import UIKit
 
 class ExchangeView: UIView {
     
+    @IBOutlet weak var testLabel: UILabel!
 }

@@ -32,6 +32,9 @@
                 <constraint firstItem="yXT-pW-cPp" firstAttribute="centerY" secondItem="fnl-2z-Ty3" secondAttribute="centerY" id="QkC-gl-PYW"/>
                 <constraint firstItem="yXT-pW-cPp" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="cPU-g9-6hA"/>
             </constraints>
+            <connections>
+                <outlet property="testLabel" destination="yXT-pW-cPp" id="Ekf-Ef-oYL"/>
+            </connections>
             <point key="canvasLocation" x="49" y="21"/>
         </view>
     </objects>

@@ -29,6 +29,13 @@
 		2C77530828F45F8E00045A77 /* Localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C77530728F45F8E00045A77 /* Localized.swift */; };
 		2C77530B28F460C300045A77 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2C77530D28F460C300045A77 /* Localizable.strings */; };
 		2C77530F28F4618F00045A77 /* String + Additional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C77530E28F4618F00045A77 /* String + Additional.swift */; };
+		2C77531128F4640C00045A77 /* CurrencyConverterApiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C77531028F4640C00045A77 /* CurrencyConverterApiModel.swift */; };
+		2C77531328F4693E00045A77 /* CurrencyRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C77531228F4693E00045A77 /* CurrencyRequest.swift */; };
+		2C77531528F46D6300045A77 /* UIApplicaation + TopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C77531428F46D6300045A77 /* UIApplicaation + TopViewController.swift */; };
+		2C77531728F46D9E00045A77 /* ErrorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C77531628F46D9E00045A77 /* ErrorService.swift */; };
+		2C77531928F471F000045A77 /* FetchConversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C77531828F471F000045A77 /* FetchConversions.swift */; };
+		2C77531B28F475B600045A77 /* URLRequest + Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C77531A28F475B600045A77 /* URLRequest + Init.swift */; };
+		2C77531D28F475E800045A77 /* Encodable + Additional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C77531C28F475E800045A77 /* Encodable + Additional.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +63,13 @@
 		2C77530728F45F8E00045A77 /* Localized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localized.swift; sourceTree = "<group>"; };
 		2C77530C28F460C300045A77 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2C77530E28F4618F00045A77 /* String + Additional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String + Additional.swift"; sourceTree = "<group>"; };
+		2C77531028F4640C00045A77 /* CurrencyConverterApiModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyConverterApiModel.swift; sourceTree = "<group>"; };
+		2C77531228F4693E00045A77 /* CurrencyRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyRequest.swift; sourceTree = "<group>"; };
+		2C77531428F46D6300045A77 /* UIApplicaation + TopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplicaation + TopViewController.swift"; sourceTree = "<group>"; };
+		2C77531628F46D9E00045A77 /* ErrorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorService.swift; sourceTree = "<group>"; };
+		2C77531828F471F000045A77 /* FetchConversions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchConversions.swift; sourceTree = "<group>"; };
+		2C77531A28F475B600045A77 /* URLRequest + Init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLRequest + Init.swift"; sourceTree = "<group>"; };
+		2C77531C28F475E800045A77 /* Encodable + Additional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable + Additional.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +131,7 @@
 			children = (
 				2C7752EE28F44D8800045A77 /* NetworkService */,
 				2C7752E828F44AE700045A77 /* NavigationService.swift */,
+				2C77531628F46D9E00045A77 /* ErrorService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -134,6 +149,9 @@
 			isa = PBXGroup;
 			children = (
 				2C77530E28F4618F00045A77 /* String + Additional.swift */,
+				2C77531428F46D6300045A77 /* UIApplicaation + TopViewController.swift */,
+				2C77531A28F475B600045A77 /* URLRequest + Init.swift */,
+				2C77531C28F475E800045A77 /* Encodable + Additional.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -187,6 +205,7 @@
 				2C7752EF28F44DA200045A77 /* NetworkHelpers */,
 				2C7752EC28F44CDD00045A77 /* NetworkService.swift */,
 				2C77530128F4527400045A77 /* ApiResponse.swift */,
+				2C77531828F471F000045A77 /* FetchConversions.swift */,
 			);
 			path = NetworkService;
 			sourceTree = "<group>";
@@ -204,6 +223,7 @@
 		2C7752F628F44E8900045A77 /* RequestModels */ = {
 			isa = PBXGroup;
 			children = (
+				2C77531228F4693E00045A77 /* CurrencyRequest.swift */,
 			);
 			path = RequestModels;
 			sourceTree = "<group>";
@@ -211,6 +231,7 @@
 		2C7752F728F44E9A00045A77 /* ResponseModels */ = {
 			isa = PBXGroup;
 			children = (
+				2C77531028F4640C00045A77 /* CurrencyConverterApiModel.swift */,
 			);
 			path = ResponseModels;
 			sourceTree = "<group>";
@@ -315,9 +336,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C7752FA28F4518F00045A77 /* ApiError.swift in Sources */,
+				2C77531928F471F000045A77 /* FetchConversions.swift in Sources */,
 				2C7752EB28F44C4E00045A77 /* RootViewProtocol.swift in Sources */,
 				2C7752FE28F4520000045A77 /* MessageErrorBody.swift in Sources */,
 				2C77530228F4527400045A77 /* ApiResponse.swift in Sources */,
+				2C77531328F4693E00045A77 /* CurrencyRequest.swift in Sources */,
 				2C77530828F45F8E00045A77 /* Localized.swift in Sources */,
 				2C7752E928F44AE700045A77 /* NavigationService.swift in Sources */,
 				2C7752C028F430C800045A77 /* ViewController.swift in Sources */,
@@ -327,11 +350,16 @@
 				2C77530528F45C6400045A77 /* Colors.swift in Sources */,
 				2C7752E428F44A4000045A77 /* ExchangeViewController.swift in Sources */,
 				2C7752BC28F430C800045A77 /* AppDelegate.swift in Sources */,
+				2C77531D28F475E800045A77 /* Encodable + Additional.swift in Sources */,
+				2C77531728F46D9E00045A77 /* ErrorService.swift in Sources */,
 				2C7752E728F44A7400045A77 /* ExchangeView.swift in Sources */,
 				2C7752F328F44E1B00045A77 /* ApiHttpMethod.swift in Sources */,
 				2C77530F28F4618F00045A77 /* String + Additional.swift in Sources */,
 				2C7752ED28F44CDD00045A77 /* NetworkService.swift in Sources */,
+				2C77531528F46D6300045A77 /* UIApplicaation + TopViewController.swift in Sources */,
+				2C77531B28F475B600045A77 /* URLRequest + Init.swift in Sources */,
 				2C7752F128F44DD000045A77 /* ApiEndPoint.swift in Sources */,
+				2C77531128F4640C00045A77 /* CurrencyConverterApiModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -480,6 +508,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Currency Exchange/Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -507,6 +536,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Currency Exchange/Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -594,6 +624,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Currency Exchange/Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -681,6 +712,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Currency Exchange/Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
