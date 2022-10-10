@@ -11,7 +11,8 @@ class NavigationService {
     
     static func setup() {
         AppDelegate.shared?.window = UIWindow(frame: UIScreen.main.bounds)
-        AppDelegate.shared?.window?.rootViewController = ExchangeViewController()
+        let navigationVC = UINavigationController(rootViewController: ExchangeViewController())
+        AppDelegate.shared?.window?.rootViewController = navigationVC
         AppDelegate.shared?.window?.makeKeyAndVisible()
     }
 }
