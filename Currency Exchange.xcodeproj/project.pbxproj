@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -55,13 +55,61 @@
 			isa = PBXGroup;
 			children = (
 				2C7752BB28F430C800045A77 /* AppDelegate.swift */,
+				2C7752CF28F43E1200045A77 /* Controllers */,
+				2C7752D628F43F1C00045A77 /* Protocols */,
+				2C7752D128F43E2F00045A77 /* Services */,
+				2C7752D228F43E4100045A77 /* Models */,
+				2C7752D328F43E4900045A77 /* Extensions */,
+				2C7752D428F43E5D00045A77 /* Resourses */,
 				2C7752BF28F430C800045A77 /* ViewController.swift */,
 				2C7752C128F430C800045A77 /* Main.storyboard */,
-				2C7752C428F430CC00045A77 /* Assets.xcassets */,
 				2C7752C628F430CC00045A77 /* LaunchScreen.storyboard */,
 				2C7752C928F430CC00045A77 /* Info.plist */,
 			);
 			path = "Currency Exchange";
+			sourceTree = "<group>";
+		};
+		2C7752CF28F43E1200045A77 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		2C7752D128F43E2F00045A77 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		2C7752D228F43E4100045A77 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		2C7752D328F43E4900045A77 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		2C7752D428F43E5D00045A77 /* Resourses */ = {
+			isa = PBXGroup;
+			children = (
+				2C7752C428F430CC00045A77 /* Assets.xcassets */,
+			);
+			path = Resourses;
+			sourceTree = "<group>";
+		};
+		2C7752D628F43F1C00045A77 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -90,7 +138,6 @@
 		2C7752B028F430C800045A77 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1400;
 				LastUpgradeCheck = 1400;
 				TargetAttributes = {
