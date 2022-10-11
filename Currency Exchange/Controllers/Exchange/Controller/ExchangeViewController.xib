@@ -90,17 +90,17 @@
                                                         <constraint firstAttribute="height" constant="50" id="bs5-Wl-p02"/>
                                                     </constraints>
                                                 </view>
-                                                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="1" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="asY-0h-Igg">
-                                                    <rect key="frame" x="145" y="16" width="125" height="28"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="asY-0h-Igg">
+                                                    <rect key="frame" x="145" y="18.333333333333343" width="125" height="23.333333333333329"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sell" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FuU-bc-6Jq">
-                                                    <rect key="frame" x="60" y="17" width="80" height="26.333333333333329"/>
+                                                    <rect key="frame" x="60" y="19.333333333333343" width="80" height="21.666666666666671"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="80" id="mJP-h6-Jcn"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -112,11 +112,11 @@
                                                     </constraints>
                                                 </view>
                                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="USD" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GoG-qH-a5b">
-                                                    <rect key="frame" x="275" y="16" width="70" height="28"/>
+                                                    <rect key="frame" x="275" y="18.333333333333343" width="70" height="23.333333333333329"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="70" id="kVZ-dJ-cDH"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad" returnKeyType="next"/>
                                                 </textField>
                                             </subviews>
@@ -167,26 +167,26 @@
                                                     </constraints>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Receive" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4gu-LV-3vv">
-                                                    <rect key="frame" x="60" y="17" width="80" height="26.333333333333329"/>
+                                                    <rect key="frame" x="60" y="19.333333333333314" width="80" height="21.666666666666671"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="80" id="W8N-KZ-eYx"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+110.30" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Yh-vU-yak">
-                                                    <rect key="frame" x="150" y="17" width="120" height="26.333333333333329"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                    <rect key="frame" x="150" y="19.333333333333314" width="120" height="21.666666666666671"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="USD" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YIp-F9-T4m">
-                                                    <rect key="frame" x="275" y="16" width="70" height="28"/>
+                                                    <rect key="frame" x="275" y="18.333333333333314" width="70" height="23.333333333333329"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="70" id="dSN-vv-Tys"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad" returnKeyType="next"/>
                                                 </textField>
                                             </subviews>

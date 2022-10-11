@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 protocol CurrencySelectable {
     var fromAmount: Double { get }
@@ -45,7 +46,7 @@ class ExchangeViewController: UIViewController {
     
     //MARK: - Properties
     private let conversionResult = ConversionResult()
-    private let maxConversionValueDigits = 10
+    private let maxConversionValueDigits = 7
     
     //MARK: - Lifecycle
     override func viewDidLoad() {
@@ -86,27 +87,34 @@ class ExchangeViewController: UIViewController {
             return false
         }
         
-        let currentText = textField.text ?? ""
+        if string.isEmpty { return true }
         
+        let currentText = textField.text ?? ""
+
         guard let stringRange = Range(range, in: currentText) else { return false }
         let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
         if updatedText.first == "0" {
             return false
         }
         
-        return updatedText.count <= maxConversionValueDigits
+        return updatedText.isValidDouble(maxDecimalPlaces: 2, maxDigits: maxConversionValueDigits)
     }
     
     private func setupActions() {
         rootView?.submitButtonAction = { [unowned self] in
             
-            rootView?.sellCurrencyAmountTextField?.resignFirstResponder()
+            if fromAmount == 0 {
+                return showAlertWith(message: Localized.pleaseEnterValue)
+            }
             
+            rootView?.sellCurrencyAmountTextField?.resignFirstResponder()
+            MBProgressHUD.showAdded(to: view, animated: true)
             conversionResult.currencyConversion(fromAmount: fromAmount,
                                                 fromCurrency: fromCurrency.rawValue,
                                                 toCurrency: toCurrency.rawValue) {
                 [weak self] resultConverion, errorMessage in
                 guard let strongSelf = self else { return }
+                MBProgressHUD.hide(for: strongSelf.view, animated: true)
                 
                 if let errorMessage = errorMessage {
                     ErrorService.showError(message: errorMessage)
@@ -180,7 +188,8 @@ extension ExchangeViewController: CurrencySelectable {
     }
     
     var fromAmount: Double {
-        return Double(rootView?.sellCurrencyAmountTextField.text ?? "0.00")!
+        guard let ammountString = rootView?.sellCurrencyAmountTextField.text else { return 0.0 }
+        return Double( ammountString) ?? 0.0
     }
     
     var fromCurrency: CurrencyType {
@@ -199,4 +208,3 @@ extension ExchangeViewController: CurrencySelectable {
         return .USD
     }
 }
-

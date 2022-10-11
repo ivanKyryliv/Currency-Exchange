@@ -53,4 +53,7 @@ enum Localized {
         return "Receive".localized
     }
     
+    static var pleaseEnterValue: String {
+        return "PleaseEnterValue".localized
+    }
 }

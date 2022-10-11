@@ -84,7 +84,7 @@ class ExchangeView: BaseView {
         downImageView?.tintColor = Colors.mainWhiteColor
         
         receiveCurrencyAmountLabel.textColor = Colors.lightGreenColor
-        sellCurrencyAmountTextField.keyboardType = .numberPad
+        sellCurrencyAmountTextField.keyboardType = .decimalPad
         sellCurrencyAmountTextField.borderStyle = .none
         sellCurrencyAmountTextField.textAlignment = .right
         
