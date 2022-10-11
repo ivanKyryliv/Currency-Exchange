@@ -41,23 +41,23 @@ class ExchangeViewController: UIViewController {
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setupActions()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         setupUI()
         testConversion()
     }
     
     private func setupUI() {
         title = Localized.exchangeNavigationTitle
-        navigationController?.view.backgroundColor = Colors.navigationBarColor
         let navigationBar = navigationController?.navigationBar
         navigationBar?.shadowImage = UIImage()
         if #available(iOS 13.0, *) {
             let navigationBarAppearence = UINavigationBarAppearance()
+            navigationBarAppearence.backgroundColor = Colors.navigationBarColor
+            navigationBarAppearence.titleTextAttributes = [.foregroundColor: UIColor.white]
             navigationBarAppearence.shadowColor = .clear
             navigationBar?.scrollEdgeAppearance = navigationBarAppearence
             navigationBar?.standardAppearance = navigationBarAppearence
@@ -68,6 +68,13 @@ class ExchangeViewController: UIViewController {
         }
     }
     
+    private func setupActions() {
+        rootView?.submitButtonAction = { [unowned self] in
+            print("submit button action")
+        }
+    }
+    
+    
     private func testConversion() {
         conversionResult.currencyConversion { [weak self] resultData, errorMessage in
             
@@ -77,13 +84,14 @@ class ExchangeViewController: UIViewController {
                 ErrorService.showError(message: errorMessage)
             } else {
                 if let result = resultData {
-                    strongSelf.rootView?.testLabel.text = " 340.51 EUR = \(result.amount) \(result.currency.rawValue)"
+//                    strongSelf.rootView?.testLabel.text = " 340.51 EUR = \(result.amount) \(result.currency.rawValue)"
+//                    strongSelf.rootView?.testLabel.text = countryFlag(countryCode: "EU")
+                    
                 }
             }
         }
     }
 }
-
 
 //MARK: - RootViewGettable
 extension ExchangeViewController: RootViewGettable {

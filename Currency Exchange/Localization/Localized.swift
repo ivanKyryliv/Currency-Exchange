@@ -25,4 +25,32 @@ enum Localized {
         return "Ok".localized
     }
     
+    static var done: String {
+        return "Done".localized
+    }
+    
+    static var myBalances: String {
+        return "MyBalances".localized
+    }
+    
+    static var currencyExchange: String {
+        return "CurrencyExchange".localized
+    }
+    
+    static var submit: String {
+        return "Submit".localized
+    }
+    
+    static var currencyConverted: String {
+        return "CurrencyConverted".localized
+    }
+    
+    static var sell: String {
+        return "Sell".localized
+    }
+    
+    static var receive: String {
+        return "Receive".localized
+    }
+    
 }

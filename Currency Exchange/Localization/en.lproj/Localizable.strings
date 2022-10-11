@@ -11,4 +11,10 @@
 "Error" = "Error";
 "UnknownMessage" = "Unknown message";
 "Ok" = "Ok";
-
+"Done" = "Done";
+"MyBalances" = "My balances";
+"CurrencyExchange" = "Currency exchange";
+"Submit" = "Submit";
+"CurrencyConverted" = "Currency converted";
+"Sell" = "Sell";
+"Receive" = "Receive";
