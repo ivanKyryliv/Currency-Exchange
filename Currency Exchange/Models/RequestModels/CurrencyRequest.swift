@@ -9,6 +9,6 @@ import Foundation
 
 struct CurrencyRequest: Codable {
     var fromAmount: Double
-    var fromCurrency: CurrencyType
-    var toCurrency: CurrencyType
+    var fromCurrency: String
+    var toCurrency: String
 }

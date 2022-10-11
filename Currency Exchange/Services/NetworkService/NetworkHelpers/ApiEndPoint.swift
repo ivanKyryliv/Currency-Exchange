@@ -8,7 +8,7 @@
 import Foundation
 
 class ApiEndPoint {
-    static func convertCurrency(fromAmount: Double, fromCurrency: CurrencyType, toCurrency: CurrencyType) -> URL {
-        return URL(string: "\(NetworkService.serverBaseUrl)currency/commercial/exchange/\(fromAmount)-\(fromCurrency.rawValue)/\(toCurrency.rawValue)/latest")!
+    static func convertCurrency(fromAmount: Double, fromCurrency: String, toCurrency: String) -> URL {
+        return URL(string: "\(NetworkService.serverBaseUrl)currency/commercial/exchange/\(fromAmount)-\(fromCurrency)/\(toCurrency)/latest")!
     }
 }

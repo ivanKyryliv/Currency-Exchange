@@ -7,17 +7,25 @@
 
 import UIKit
 
+protocol CurrencySelectable {
+    var fromAmount: Double { get }
+    var fromCurrency: CurrencyType { get }
+    var toCurrency: CurrencyType { get }
+    var defaultMyBalances: [CurrencyType: Double] { get }
+}
+
 protocol Conversions {
-    func currencyConversion(completionHandler: @escaping (_ result: CurrencyConverterApiModel?,
-                                                          _ errorMessage: String?) -> Void)
+    func currencyConversion(fromAmount: Double, fromCurrency: String, toCurrency: String,
+                            completionHandler: @escaping (_ result: CurrencyConverterApiModel?, _ errorMessage: String?) -> Void)
 }
 
 struct ConversionResult: Conversions {
-    func currencyConversion(completionHandler: @escaping (CurrencyConverterApiModel?, String?) -> Void) {
+    func currencyConversion(fromAmount: Double, fromCurrency: String, toCurrency: String,
+                            completionHandler: @escaping (CurrencyConverterApiModel?, String?) -> Void) {
         
-        let testData = CurrencyRequest(fromAmount: 340.51,
-                                       fromCurrency: CurrencyType.EUR,
-                                       toCurrency: CurrencyType.JPY)
+        let testData = CurrencyRequest(fromAmount: fromAmount,
+                                       fromCurrency: fromCurrency,
+                                       toCurrency: toCurrency)
         
         let fetchConversions = FetchConversions(currencyRequest: testData)
         
@@ -38,8 +46,6 @@ class ExchangeViewController: UIViewController {
     //MARK: - Properties
     private let conversionResult = ConversionResult()
     private let maxConversionValueDigits = 10
-    private var currencyDefaultData: [CurrencyType: Double] = [:]
-    
     
     //MARK: - Lifecycle
     override func viewDidLoad() {
@@ -47,15 +53,14 @@ class ExchangeViewController: UIViewController {
         setupActions()
         rootView?.sellCurrencyAmountTextField.delegate = self
         rootView?.addKeyboardNotificationObservers()
-        defaultConfiguration()
         configureSellPickerView()
         configureReceivePickerView()
+        rootView?.sellCurrencyAmountTextField.text = "100"
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupUI()
-        testConversion()
     }
     
     private func setupUI() {
@@ -92,41 +97,26 @@ class ExchangeViewController: UIViewController {
         return updatedText.count <= maxConversionValueDigits
     }
     
-    private func defaultConfiguration() {
-        //currencies and initial state should be 1000.00 EUR, 0.00 USD, 0 JPY.
-        rootView?.sellCurrencyAmountTextField.text = "100"
-        currencyDefaultData = [CurrencyType.EUR: 1000.00,
-                               CurrencyType.USD: 0.00,
-                               CurrencyType.JPY: 0]
-        
-    }
-    
     private func setupActions() {
         rootView?.submitButtonAction = { [unowned self] in
             
             rootView?.sellCurrencyAmountTextField?.resignFirstResponder()
-            print("submit button action")
-        }
-        
-        rootView?.sellChangeCurrencyButtonAction = { [unowned self] in
-            print("sell change currency buttonAction ")
-        }
-    }
-    
-    private func testConversion() {
-        conversionResult.currencyConversion { [weak self] resultData, errorMessage in
             
-            guard let strongSelf = self else { return }
-            
-            if let errorMessage = errorMessage {
-                ErrorService.showError(message: errorMessage)
-            } else {
-                if let result = resultData {
-                    //                    strongSelf.rootView?.testLabel.text = " 340.51 EUR = \(result.amount) \(result.currency.rawValue)"
-                    //                    strongSelf.rootView?.testLabel.text = countryFlag(countryCode: "EU")
-                    
+            conversionResult.currencyConversion(fromAmount: fromAmount,
+                                                fromCurrency: fromCurrency.rawValue,
+                                                toCurrency: toCurrency.rawValue) {
+                [weak self] resultConverion, errorMessage in
+                guard let strongSelf = self else { return }
+                
+                if let errorMessage = errorMessage {
+                    ErrorService.showError(message: errorMessage)
+                } else {
+                    if let result = resultConverion {
+                        strongSelf.rootView?.receiveCurrencyAmountLabel.text = "+ \(result.amount)"
+                    }
                 }
             }
+            print("submit button action")
         }
     }
 }
@@ -155,11 +145,11 @@ extension ExchangeViewController: RootViewGettable {
 //MARK: - PickerSelectable
 extension ExchangeViewController: PickerSelectable {
     var selectSellTextField: UITextField? {
-        rootView?.sellCurrencyTypeTextField
+        rootView?.fromCurrencyTextField
     }
     
     var selectReceiveTextField: UITextField? {
-        rootView?.receiveCurrencyTypetextField
+        rootView?.toCurrencyTextField
     }
 }
 
@@ -167,16 +157,46 @@ extension ExchangeViewController: PickerSelectable {
 extension ExchangeViewController: SelectedCurrencyTypeDelegate {
     
     func didSelect(type: CurrencyType, exchangeType: ExchangeType) {
+        rootView?.receiveCurrencyAmountLabel.text = nil
         switch exchangeType {
         case .sell:
-            rootView?.sellCurrencyTypeTextField.text = type.rawValue
-            rootView?.sellCurrencyTypeTextField.resignFirstResponder()
+            rootView?.fromCurrencyTextField.text = type.rawValue
+            rootView?.fromCurrencyTextField.resignFirstResponder()
         case .receive:
-            rootView?.receiveCurrencyTypetextField.text = type.rawValue
-            rootView?.receiveCurrencyTypetextField.resignFirstResponder()
+            rootView?.toCurrencyTextField.text = type.rawValue
+            rootView?.toCurrencyTextField.resignFirstResponder()
         }
         print("didselect picker")
     }
 }
 
+//MARK: - SelectedCurrencyTypeDelegate
+extension ExchangeViewController: CurrencySelectable {
+    var defaultMyBalances: [CurrencyType: Double] {
+        //default 1000.00 EUR, 0.00 USD, 0 JPY.
+        return [CurrencyType.EUR: 1000.00,
+                CurrencyType.USD: 0.00,
+                CurrencyType.JPY: 0]
+    }
+    
+    var fromAmount: Double {
+        return Double(rootView?.sellCurrencyAmountTextField.text ?? "0.00")!
+    }
+    
+    var fromCurrency: CurrencyType {
+        if let fromCurrencyTextField = rootView?.fromCurrencyTextField.text,
+           let currency = CurrencyType(rawValue: fromCurrencyTextField) {
+            return currency
+        }
+        return .EUR
+    }
+    
+    var toCurrency: CurrencyType {
+        if let toCurrencyTextField = rootView?.toCurrencyTextField.text,
+           let currency = CurrencyType(rawValue: toCurrencyTextField) {
+            return currency
+        }
+        return .USD
+    }
+}
 

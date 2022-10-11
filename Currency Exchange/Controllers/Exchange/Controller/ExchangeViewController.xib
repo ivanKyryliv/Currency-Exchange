@@ -253,19 +253,19 @@
             <connections>
                 <outlet property="currencyExchangeLabel" destination="PMB-eX-vKv" id="nM4-6Y-aBC"/>
                 <outlet property="downImageView" destination="fhj-Pv-hE9" id="mda-Bu-s8C"/>
+                <outlet property="fromCurrencyTextField" destination="GoG-qH-a5b" id="5Fa-el-tz3"/>
                 <outlet property="myBalancesLabel" destination="kAS-1g-FHY" id="taN-gA-FIv"/>
                 <outlet property="receiveCircleView" destination="jRP-uZ-vZ7" id="ppj-FH-Th9"/>
                 <outlet property="receiveCurrencyAmountLabel" destination="3Yh-vU-yak" id="flL-Kw-srp"/>
-                <outlet property="receiveCurrencyTypetextField" destination="YIp-F9-T4m" id="zK9-PI-Ipd"/>
                 <outlet property="receiveLabel" destination="4gu-LV-3vv" id="03p-0A-z4C"/>
                 <outlet property="receiveSeparatorView" destination="Q5B-Yl-lTc" id="VfR-ne-loO"/>
                 <outlet property="scrollView" destination="glc-7d-0Oj" id="DvC-SW-I9t"/>
                 <outlet property="sellCircleView" destination="ldf-I4-6PO" id="OkF-pW-56q"/>
                 <outlet property="sellCurrencyAmountTextField" destination="asY-0h-Igg" id="4SU-UP-iC9"/>
-                <outlet property="sellCurrencyTypeTextField" destination="GoG-qH-a5b" id="OF2-fU-IpQ"/>
                 <outlet property="sellLabel" destination="FuU-bc-6Jq" id="V9O-K6-SJS"/>
                 <outlet property="sellSeparatorView" destination="7vu-Pq-LVL" id="i1h-DR-o7D"/>
                 <outlet property="submitButton" destination="Adc-GL-aRD" id="ily-eS-hgC"/>
+                <outlet property="toCurrencyTextField" destination="YIp-F9-T4m" id="lcj-0N-VJg"/>
                 <outlet property="upImageView" destination="bOQ-xm-485" id="3Lb-Fn-cih"/>
             </connections>
             <point key="canvasLocation" x="47.692307692307693" y="20.616113744075829"/>

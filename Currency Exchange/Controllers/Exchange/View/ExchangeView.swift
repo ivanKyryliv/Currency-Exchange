@@ -18,19 +18,19 @@ class ExchangeView: BaseView {
     
     @IBOutlet weak var sellCurrencyAmountTextField: UITextField!
     
-    @IBOutlet weak var sellCurrencyTypeTextField: UITextField! {
+    @IBOutlet weak var fromCurrencyTextField: UITextField! {
         didSet {
-            sellCurrencyTypeTextField.setIcon(UIImage(named: "path")!)
+            fromCurrencyTextField.setIcon(UIImage(named: "path")!)
+        }
+    }
+
+    @IBOutlet weak var toCurrencyTextField: UITextField! {
+        didSet {
+            toCurrencyTextField.setIcon(UIImage(named: "path")!)
         }
     }
     
-    @IBOutlet weak var receiveCurrencyTypetextField: UITextField! {
-        didSet {
-            receiveCurrencyTypetextField.setIcon(UIImage(named: "path")!)
-        }
-    }
-    
-    @IBOutlet private weak var receiveCurrencyAmountLabel: UILabel!
+    @IBOutlet weak var receiveCurrencyAmountLabel: UILabel!
     
     @IBOutlet private weak var sellCircleView: UIView!
     @IBOutlet private weak var receiveCircleView: UIView!
@@ -44,7 +44,6 @@ class ExchangeView: BaseView {
     @IBOutlet private weak var submitButton: UIButton!
     
     var submitButtonAction: (()->())?
-    var sellChangeCurrencyButtonAction: (()->())?
     
     override var activeScrollView: UIScrollView? {
         set {
@@ -54,7 +53,6 @@ class ExchangeView: BaseView {
             return self.scrollView
         }
     }
-    
     
     //MARK: - Lifecycle
     override func awakeFromNib() {
@@ -75,6 +73,7 @@ class ExchangeView: BaseView {
     }
     
     private func configureUI() {
+        receiveCurrencyAmountLabel.text = nil
         sellCircleView.setupCornerRadius(backgroundColor: Colors.mainRedColor)
         receiveCircleView.setupCornerRadius(backgroundColor: Colors.mainGreenColor)
         
@@ -91,15 +90,13 @@ class ExchangeView: BaseView {
         
         sellSeparatorView.backgroundColor = Colors.lightGrayColor
         receiveSeparatorView.backgroundColor = Colors.lightGrayColor
+        fromCurrencyTextField.text = CurrencyType.EUR.rawValue
+        toCurrencyTextField.text = CurrencyType.USD.rawValue
     }
     
     //MARK: - IBActions
     @IBAction private func submitButtonAction(_ sender: Any) {
         submitButtonAction?()
-    }
-    
-    @IBAction private func sellChangeCurrencyButtonAction(_ sender: Any) {
-        sellChangeCurrencyButtonAction?()
     }
 }
 

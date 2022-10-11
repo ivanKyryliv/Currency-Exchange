@@ -15,7 +15,6 @@ struct FetchConversions: RequestBuilder {
         self.currencyRequest = currencyRequest
     }
     
-    
     var headers: [String : String] {
         return [:]
     }
