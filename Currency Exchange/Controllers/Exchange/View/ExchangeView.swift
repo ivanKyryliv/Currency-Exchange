@@ -15,17 +15,27 @@ class ExchangeView: BaseView {
     @IBOutlet private weak var currencyExchangeLabel: UILabel!
     @IBOutlet private weak var sellLabel: UILabel!
     @IBOutlet private weak var receiveLabel: UILabel!
+    
     @IBOutlet weak var sellCurrencyAmountTextField: UITextField!
-    @IBOutlet private weak var sellCurencyTypeLabel: UILabel!
+    
+    @IBOutlet weak var sellCurrencyTypeTextField: UITextField! {
+        didSet {
+            sellCurrencyTypeTextField.setIcon(UIImage(named: "path")!)
+        }
+    }
+    
+    @IBOutlet weak var receiveCurrencyTypetextField: UITextField! {
+        didSet {
+            receiveCurrencyTypetextField.setIcon(UIImage(named: "path")!)
+        }
+    }
+    
     @IBOutlet private weak var receiveCurrencyAmountLabel: UILabel!
-    @IBOutlet private weak var receiveCurrencyTypeLabel: UILabel!
     
     @IBOutlet private weak var sellCircleView: UIView!
     @IBOutlet private weak var receiveCircleView: UIView!
     
-    
     @IBOutlet weak var receiveSeparatorView: UIView!
-    
     @IBOutlet weak var sellSeparatorView: UIView!
     
     @IBOutlet private weak var upImageView: UIImageView!

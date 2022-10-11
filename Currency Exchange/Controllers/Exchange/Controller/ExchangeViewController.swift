@@ -38,14 +38,18 @@ class ExchangeViewController: UIViewController {
     //MARK: - Properties
     private let conversionResult = ConversionResult()
     private let maxConversionValueDigits = 10
+    private var currencyDefaultData: [CurrencyType: Double] = [:]
+    
     
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupActions()
-        rootView?.sellCurrencyAmountTextField.text = "100"
         rootView?.sellCurrencyAmountTextField.delegate = self
         rootView?.addKeyboardNotificationObservers()
+        defaultConfiguration()
+        configureSellPickerView()
+        configureReceivePickerView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -88,6 +92,15 @@ class ExchangeViewController: UIViewController {
         return updatedText.count <= maxConversionValueDigits
     }
     
+    private func defaultConfiguration() {
+        //currencies and initial state should be 1000.00 EUR, 0.00 USD, 0 JPY.
+        rootView?.sellCurrencyAmountTextField.text = "100"
+        currencyDefaultData = [CurrencyType.EUR: 1000.00,
+                               CurrencyType.USD: 0.00,
+                               CurrencyType.JPY: 0]
+        
+    }
+    
     private func setupActions() {
         rootView?.submitButtonAction = { [unowned self] in
             
@@ -99,7 +112,6 @@ class ExchangeViewController: UIViewController {
             print("sell change currency buttonAction ")
         }
     }
-    
     
     private func testConversion() {
         conversionResult.currencyConversion { [weak self] resultData, errorMessage in
@@ -139,3 +151,32 @@ extension ExchangeViewController: UITextFieldDelegate {
 extension ExchangeViewController: RootViewGettable {
     typealias RootViewType = ExchangeView
 }
+
+//MARK: - PickerSelectable
+extension ExchangeViewController: PickerSelectable {
+    var selectSellTextField: UITextField? {
+        rootView?.sellCurrencyTypeTextField
+    }
+    
+    var selectReceiveTextField: UITextField? {
+        rootView?.receiveCurrencyTypetextField
+    }
+}
+
+//MARK: - SelectedCurrencyTypeDelegate
+extension ExchangeViewController: SelectedCurrencyTypeDelegate {
+    
+    func didSelect(type: CurrencyType, exchangeType: ExchangeType) {
+        switch exchangeType {
+        case .sell:
+            rootView?.sellCurrencyTypeTextField.text = type.rawValue
+            rootView?.sellCurrencyTypeTextField.resignFirstResponder()
+        case .receive:
+            rootView?.receiveCurrencyTypetextField.text = type.rawValue
+            rootView?.receiveCurrencyTypetextField.resignFirstResponder()
+        }
+        print("didselect picker")
+    }
+}
+
+
