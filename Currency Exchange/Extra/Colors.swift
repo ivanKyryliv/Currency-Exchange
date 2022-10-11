@@ -8,5 +8,11 @@
 import UIKit
 
 enum Colors {
-    static let navigationBarColor = UIColor(named: "navigationBarColor")!
+    static let mainBlueColor = UIColor(named: "mainBlueColor")!
+    static let mainRedColor = UIColor(named: "mainRedColor")!
+    static let mainGreenColor = UIColor(named: "mainGreenColor")!
+    static let mainWhiteColor = UIColor(named: "mainWhiteColor")!
+    static let lightGreenColor = UIColor(named: "lightGreenColor")!
+    static let lightGrayColor = UIColor(named: "lightGrayColor")!
+
 }

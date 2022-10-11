@@ -7,14 +7,15 @@
 
 import UIKit
 
-class ExchangeView: UIView {
+class ExchangeView: BaseView {
     
     //MARK: - Properties
+    @IBOutlet private weak var scrollView: UIScrollView!
     @IBOutlet private weak var myBalancesLabel: UILabel!
     @IBOutlet private weak var currencyExchangeLabel: UILabel!
     @IBOutlet private weak var sellLabel: UILabel!
     @IBOutlet private weak var receiveLabel: UILabel!
-    @IBOutlet private weak var sellCurrencyAmountTextField: UITextField!
+    @IBOutlet weak var sellCurrencyAmountTextField: UITextField!
     @IBOutlet private weak var sellCurencyTypeLabel: UILabel!
     @IBOutlet private weak var receiveCurrencyAmountLabel: UILabel!
     @IBOutlet private weak var receiveCurrencyTypeLabel: UILabel!
@@ -22,15 +23,34 @@ class ExchangeView: UIView {
     @IBOutlet private weak var sellCircleView: UIView!
     @IBOutlet private weak var receiveCircleView: UIView!
     
+    
+    @IBOutlet weak var receiveSeparatorView: UIView!
+    
+    @IBOutlet weak var sellSeparatorView: UIView!
+    
+    @IBOutlet private weak var upImageView: UIImageView!
+    @IBOutlet private weak var downImageView: UIImageView!
+    
     @IBOutlet private weak var submitButton: UIButton!
     
     var submitButtonAction: (()->())?
+    var sellChangeCurrencyButtonAction: (()->())?
+    
+    override var activeScrollView: UIScrollView? {
+        set {
+            super.activeScrollView = scrollView
+        }
+        get {
+            return self.scrollView
+        }
+    }
     
     
     //MARK: - Lifecycle
     override func awakeFromNib() {
         super.awakeFromNib()
         localizeUI()
+        configureUI()
     }
     
     private func localizeUI() {
@@ -41,11 +61,35 @@ class ExchangeView: UIView {
         receiveLabel.text = Localized.receive
         
         submitButton.setTitle(Localized.submit.uppercased(), for: .normal)
-        submitButton.backgroundColor = Colors.navigationBarColor
+        submitButton.backgroundColor = Colors.mainBlueColor
+    }
+    
+    private func configureUI() {
+        sellCircleView.setupCornerRadius(backgroundColor: Colors.mainRedColor)
+        receiveCircleView.setupCornerRadius(backgroundColor: Colors.mainGreenColor)
+        
+        upImageView?.image = upImageView?.image?.withRenderingMode(.alwaysTemplate)
+        upImageView?.tintColor = Colors.mainWhiteColor
+        
+        downImageView?.image = downImageView?.image?.withRenderingMode(.alwaysTemplate)
+        downImageView?.tintColor = Colors.mainWhiteColor
+        
+        receiveCurrencyAmountLabel.textColor = Colors.lightGreenColor
+        sellCurrencyAmountTextField.keyboardType = .numberPad
+        sellCurrencyAmountTextField.borderStyle = .none
+        sellCurrencyAmountTextField.textAlignment = .right
+        
+        sellSeparatorView.backgroundColor = Colors.lightGrayColor
+        receiveSeparatorView.backgroundColor = Colors.lightGrayColor
     }
     
     //MARK: - IBActions
     @IBAction private func submitButtonAction(_ sender: Any) {
         submitButtonAction?()
     }
+    
+    @IBAction private func sellChangeCurrencyButtonAction(_ sender: Any) {
+        sellChangeCurrencyButtonAction?()
+    }
 }
+

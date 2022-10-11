@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C44C1D028F563D90039BE7F /* UIView + Additional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C44C1CF28F563D90039BE7F /* UIView + Additional.swift */; };
+		2C44C1D228F57CEA0039BE7F /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C44C1D128F57CEA0039BE7F /* BaseView.swift */; };
 		2C7752BC28F430C800045A77 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7752BB28F430C800045A77 /* AppDelegate.swift */; };
 		2C7752C028F430C800045A77 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7752BF28F430C800045A77 /* ViewController.swift */; };
 		2C7752C528F430CC00045A77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C7752C428F430CC00045A77 /* Assets.xcassets */; };
@@ -39,6 +41,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2C44C1CF28F563D90039BE7F /* UIView + Additional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView + Additional.swift"; sourceTree = "<group>"; };
+		2C44C1D128F57CEA0039BE7F /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		2C7752B828F430C800045A77 /* Currency Exchange.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Currency Exchange.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C7752BB28F430C800045A77 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2C7752BF28F430C800045A77 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -152,6 +156,7 @@
 				2C77531428F46D6300045A77 /* UIApplicaation + TopViewController.swift */,
 				2C77531A28F475B600045A77 /* URLRequest + Init.swift */,
 				2C77531C28F475E800045A77 /* Encodable + Additional.swift */,
+				2C44C1CF28F563D90039BE7F /* UIView + Additional.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -184,6 +189,7 @@
 		2C7752E028F44A0500045A77 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				2C44C1D128F57CEA0039BE7F /* BaseView.swift */,
 				2C7752E628F44A7400045A77 /* ExchangeView.swift */,
 			);
 			path = View;
@@ -341,9 +347,11 @@
 				2C7752FE28F4520000045A77 /* MessageErrorBody.swift in Sources */,
 				2C77530228F4527400045A77 /* ApiResponse.swift in Sources */,
 				2C77531328F4693E00045A77 /* CurrencyRequest.swift in Sources */,
+				2C44C1D228F57CEA0039BE7F /* BaseView.swift in Sources */,
 				2C77530828F45F8E00045A77 /* Localized.swift in Sources */,
 				2C7752E928F44AE700045A77 /* NavigationService.swift in Sources */,
 				2C7752C028F430C800045A77 /* ViewController.swift in Sources */,
+				2C44C1D028F563D90039BE7F /* UIView + Additional.swift in Sources */,
 				2C7752F528F44E4D00045A77 /* ApiStatusCode.swift in Sources */,
 				2C7752FC28F451B600045A77 /* NetworkRequestError.swift in Sources */,
 				2C77530028F4522800045A77 /* ApiParseError.swift in Sources */,
