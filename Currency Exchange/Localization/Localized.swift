@@ -56,4 +56,9 @@ enum Localized {
     static var pleaseEnterValue: String {
         return "PleaseEnterValue".localized
     }
+    
+    static var notEnoughMoneyConversion: String {
+        return "NotEnoughMoneyConversion".localized
+    }
+    
 }

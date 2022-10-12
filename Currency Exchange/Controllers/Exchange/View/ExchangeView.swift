@@ -10,6 +10,21 @@ import UIKit
 class ExchangeView: BaseView {
     
     //MARK: - Properties
+    
+    @IBOutlet weak var collectionView: UICollectionView! {
+        didSet {
+            collectionView.registerCell(withClass: BalanceCollectionViewCell.self)
+        }
+    }
+    
+    @IBOutlet private weak var collectionLayout: UICollectionViewFlowLayout! {
+        didSet {
+            collectionLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+            collectionLayout.minimumLineSpacing = 20.0
+            collectionLayout.minimumInteritemSpacing = 20.0
+        }
+    }
+    
     @IBOutlet private weak var scrollView: UIScrollView!
     @IBOutlet private weak var myBalancesLabel: UILabel!
     @IBOutlet private weak var currencyExchangeLabel: UILabel!

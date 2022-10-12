@@ -12,16 +12,23 @@ protocol CurrencySelectable {
     var fromAmount: Double { get }
     var fromCurrency: CurrencyType { get }
     var toCurrency: CurrencyType { get }
-    var defaultMyBalances: [CurrencyType: Double] { get }
+    var myBalances: [CurrencyType: Double] { get set }
+    var currencyConversionPercent: Double { get set }
+    var currencyConversionsCount: Int { get set }
+    var freeConversionCount: Int { get }
 }
 
 protocol Conversions {
-    func currencyConversion(fromAmount: Double, fromCurrency: String, toCurrency: String,
+    func currencyConversion(fromAmount: Double,
+                            fromCurrency: String,
+                            toCurrency: String,
                             completionHandler: @escaping (_ result: CurrencyConverterApiModel?, _ errorMessage: String?) -> Void)
 }
 
 struct ConversionResult: Conversions {
-    func currencyConversion(fromAmount: Double, fromCurrency: String, toCurrency: String,
+    func currencyConversion(fromAmount: Double,
+                            fromCurrency: String,
+                            toCurrency: String,
                             completionHandler: @escaping (CurrencyConverterApiModel?, String?) -> Void) {
         
         let testData = CurrencyRequest(fromAmount: fromAmount,
@@ -42,16 +49,36 @@ struct ConversionResult: Conversions {
     }
 }
 
-class ExchangeViewController: UIViewController {
+class ExchangeViewController: BaseViewController {
+    
+    //MARK: - Local Constants
+    private struct LocalConstants {
+        static let defaulMyBalances: [CurrencyType: Double] = [CurrencyType.EUR: 1000.00,
+                                                               CurrencyType.USD: 0.00,
+                                                               CurrencyType.JPY: 0]
+        static let maxConversionValueDigits = 7
+    }
     
     //MARK: - Properties
     private let conversionResult = ConversionResult()
-    private let maxConversionValueDigits = 7
+    
+    var myBalances: [CurrencyType : Double] = LocalConstants.defaulMyBalances
+    var currencyConversionPercent = 0.7
+    var currencyConversionsCount = 1
+    
+    private var getConversionCommission: Double {
+        if currencyConversionsCount > freeConversionCount {
+            return (fromAmount / 100 * currencyConversionPercent).rounded(digits: 2)
+        }
+        return 0.0
+    }
     
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = Localized.exchangeNavigationTitle
         setupActions()
+        configureCollectionView()
         rootView?.sellCurrencyAmountTextField.delegate = self
         rootView?.addKeyboardNotificationObservers()
         configureSellPickerView()
@@ -59,27 +86,26 @@ class ExchangeViewController: UIViewController {
         rootView?.sellCurrencyAmountTextField.text = "100"
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setupUI()
+    private func configureCollectionView() {
+        rootView?.collectionView.delegate = self
+        rootView?.collectionView.dataSource = self
     }
     
-    private func setupUI() {
-        title = Localized.exchangeNavigationTitle
-        let navigationBar = navigationController?.navigationBar
-        navigationBar?.shadowImage = UIImage()
-        if #available(iOS 13.0, *) {
-            let navigationBarAppearence = UINavigationBarAppearance()
-            navigationBarAppearence.backgroundColor = Colors.mainBlueColor
-            navigationBarAppearence.titleTextAttributes = [.foregroundColor: UIColor.white]
-            navigationBarAppearence.shadowColor = .clear
-            navigationBar?.scrollEdgeAppearance = navigationBarAppearence
-            navigationBar?.standardAppearance = navigationBarAppearence
-            navigationBar?.isTranslucent = false
-        } else {
-            navigationBar?.barTintColor = Colors.mainBlueColor
-            navigationBar?.isTranslucent = false
+    private func configureMyBalanceFrom(type: CurrencyType) -> String {
+        if let balance = myBalances[type] {
+            
+            if type == .JPY {
+                return "\(Int(balance)) \(type.rawValue)"
+            }
+            
+            return "\(balance) \(type.rawValue)"
         }
+        
+        if type == .JPY {
+            return "0 \(type.rawValue)"
+        }
+        
+        return "0.00 \(type.rawValue)"
     }
     
     private func validateCurrencyFrom(textField: UITextField, range: NSRange, string: String) -> Bool {
@@ -90,14 +116,14 @@ class ExchangeViewController: UIViewController {
         if string.isEmpty { return true }
         
         let currentText = textField.text ?? ""
-
+        
         guard let stringRange = Range(range, in: currentText) else { return false }
         let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
         if updatedText.first == "0" {
             return false
         }
         
-        return updatedText.isValidDouble(maxDecimalPlaces: 2, maxDigits: maxConversionValueDigits)
+        return updatedText.isValidDouble(maxDecimalPlaces: 2, maxDigits: LocalConstants.maxConversionValueDigits)
     }
     
     private func setupActions() {
@@ -105,6 +131,11 @@ class ExchangeViewController: UIViewController {
             
             if fromAmount == 0 {
                 return showAlertWith(message: Localized.pleaseEnterValue)
+            }
+            
+            if let fromCurrencyMyBalance = myBalances[fromCurrency],
+               fromCurrencyMyBalance - fromAmount - getConversionCommission < 0 {
+                return showAlertWith(message: Localized.notEnoughMoneyConversion)
             }
             
             rootView?.sellCurrencyAmountTextField?.resignFirstResponder()
@@ -120,11 +151,47 @@ class ExchangeViewController: UIViewController {
                     ErrorService.showError(message: errorMessage)
                 } else {
                     if let result = resultConverion {
-                        strongSelf.rootView?.receiveCurrencyAmountLabel.text = "+ \(result.amount)"
+                        
+                        var message = "You have converted \(strongSelf.fromAmount) \(strongSelf.fromCurrency.rawValue) to \(result.amount) \(strongSelf.toCurrency.rawValue) "
+                        
+                        if strongSelf.getConversionCommission > 0 {
+                            message.append("Commission Fee - \(strongSelf.getConversionCommission) \(strongSelf.fromCurrency)")
+                        }
+                        
+                        strongSelf.showAlertWith(message: message,
+                                                 title: Localized.currencyConverted)
+                        { _ in
+                            strongSelf.calculateMyBalances(fromAmount: strongSelf.fromAmount,
+                                                           fromCurrency: strongSelf.fromCurrency,
+                                                           toCurrency: strongSelf.toCurrency,
+                                                           resultAmmount: result.amount,
+                                                           commissionFee: strongSelf.getConversionCommission)
+                        }
                     }
                 }
             }
-            print("submit button action")
+        }
+    }
+    
+    private func calculateMyBalances(fromAmount: Double,
+                                     fromCurrency: CurrencyType,
+                                     toCurrency: CurrencyType,
+                                     resultAmmount: String,
+                                     commissionFee: Double?) {
+        currencyConversionsCount += 1
+        
+        rootView?.receiveCurrencyAmountLabel.text = "+ \(resultAmmount)"
+        
+        if let fromCurrencyMyBalance = myBalances[fromCurrency] {
+            myBalances[fromCurrency] = (fromCurrencyMyBalance - fromAmount - getConversionCommission).rounded(digits: 2)
+        }
+        
+        if let toCurrencyMyBalance = myBalances[toCurrency], let ammount = Double(resultAmmount) {
+            myBalances[toCurrency] = (toCurrencyMyBalance + ammount).rounded(digits: 2)
+        }
+        
+        DispatchQueue.main.async {
+            self.rootView?.collectionView.reloadData()
         }
     }
 }
@@ -132,13 +199,10 @@ class ExchangeViewController: UIViewController {
 //MARK: - UITextFieldDelegate
 extension ExchangeViewController: UITextFieldDelegate {
     
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
         validateCurrencyFrom(textField: textField, range: range, string: string)
     }
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) { }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) { }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         return true
@@ -174,14 +238,16 @@ extension ExchangeViewController: SelectedCurrencyTypeDelegate {
             rootView?.toCurrencyTextField.text = type.rawValue
             rootView?.toCurrencyTextField.resignFirstResponder()
         }
-        print("didselect picker")
     }
 }
 
 //MARK: - SelectedCurrencyTypeDelegate
 extension ExchangeViewController: CurrencySelectable {
-    var defaultMyBalances: [CurrencyType: Double] {
-        //default 1000.00 EUR, 0.00 USD, 0 JPY.
+    var freeConversionCount: Int {
+        return 5
+    }
+    
+    var defaulMyBalances: [CurrencyType : Double] {
         return [CurrencyType.EUR: 1000.00,
                 CurrencyType.USD: 0.00,
                 CurrencyType.JPY: 0]
@@ -206,5 +272,34 @@ extension ExchangeViewController: CurrencySelectable {
             return currency
         }
         return .USD
+    }
+}
+
+//MARK: - SelectedCurrencyTypeDelegate
+extension ExchangeViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView,
+                        numberOfItemsInSection section: Int) -> Int {
+        return myBalances.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueCellWithClass(BalanceCollectionViewCell.self, path: indexPath)
+        
+        var balanceString: String = "0.00"
+        switch indexPath.row {
+        case 0:
+            balanceString = configureMyBalanceFrom(type: CurrencyType.EUR)
+        case 1:
+            balanceString = configureMyBalanceFrom(type: CurrencyType.USD)
+        case 2:
+            balanceString = configureMyBalanceFrom(type: CurrencyType.JPY)
+        default:
+            break
+        }
+        
+        cell.configure(title: balanceString, maxWidth: collectionView.bounds.width)
+        return cell
     }
 }

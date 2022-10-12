@@ -19,3 +19,4 @@
 "Sell" = "Sell";
 "Receive" = "Receive";
 "PleaseEnterValue" = "Please enter value";
+"NotEnoughMoneyConversion" = "Currency cannot be converted. There is not enough money to make the conversion";
