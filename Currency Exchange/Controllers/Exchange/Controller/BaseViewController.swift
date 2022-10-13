@@ -7,9 +7,9 @@
 
 import UIKit
 
-
 class BaseViewController: UIViewController {
     
+    //MARK: - Lifecycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupUI()

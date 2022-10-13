@@ -61,4 +61,12 @@ enum Localized {
         return "NotEnoughMoneyConversion".localized
     }
     
+    static var youHaveConverted: String {
+        return "YouHaveConverted".localized
+    }
+    
+    static var commissionFee: String {
+        return "CommissionFee".localized
+    }
+    
 }

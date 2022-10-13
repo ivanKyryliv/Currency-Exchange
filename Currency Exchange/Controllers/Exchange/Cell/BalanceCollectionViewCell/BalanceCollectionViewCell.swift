@@ -26,7 +26,6 @@ class BalanceCollectionViewCell: UICollectionViewCell {
     //MARK: - Lifecycle
     override func awakeFromNib() {
         super.awakeFromNib()
-        
         contentView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             contentView.leftAnchor.constraint(equalTo: leftAnchor),

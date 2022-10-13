@@ -9,6 +9,10 @@ import UIKit
 
 class ExchangeView: BaseView {
     
+    private struct LocalConstants {
+        static let collectionLayoutSpacing: CGFloat = 15.0
+    }
+    
     //MARK: - Properties
     
     @IBOutlet weak var collectionView: UICollectionView! {
@@ -20,8 +24,8 @@ class ExchangeView: BaseView {
     @IBOutlet private weak var collectionLayout: UICollectionViewFlowLayout! {
         didSet {
             collectionLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-            collectionLayout.minimumLineSpacing = 20.0
-            collectionLayout.minimumInteritemSpacing = 20.0
+            collectionLayout.minimumLineSpacing = LocalConstants.collectionLayoutSpacing
+            collectionLayout.minimumInteritemSpacing = LocalConstants.collectionLayoutSpacing
         }
     }
     

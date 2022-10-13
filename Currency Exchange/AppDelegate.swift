@@ -17,12 +17,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         NavigationService.setup()
-        
-#if DEV
-        print("DEV Scheme")
-#elseif PROD
-        print("PROD Scheme")
-#endif
         return true
     }
 }

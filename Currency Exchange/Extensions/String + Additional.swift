@@ -22,7 +22,15 @@ extension String {
         if formatter.number(from: self) != nil {
             let split = self.components(separatedBy: decimalSeparator)
             let digits = split.count == 2 ? split.last ?? "" : ""
+            
+            print(split.count, "split.count ")
+            print(digits, "digits")
+            print(split.last, "split.last ==")
+            
+            
             return digits.count <= maxDecimalPlaces && split.first?.count ?? 0 <= maxDigits
+            
+            
         }
         
         return false
