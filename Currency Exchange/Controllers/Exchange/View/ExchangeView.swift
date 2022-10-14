@@ -63,6 +63,7 @@ class ExchangeView: BaseView {
     @IBOutlet private weak var submitButton: UIButton!
     
     var submitButtonAction: (()->())?
+    var doneToolBarAction: (()->())?
     
     override var activeScrollView: UIScrollView? {
         set {
@@ -111,9 +112,16 @@ class ExchangeView: BaseView {
         receiveSeparatorView.backgroundColor = Colors.lightGrayColor
         fromCurrencyTextField.text = CurrencyType.EUR.rawValue
         toCurrencyTextField.text = CurrencyType.USD.rawValue
+        
+        sellCurrencyAmountTextField?.setupToolBarFor(action: #selector(doneActionKeyBoard), and: Localized.done)
     }
     
     //MARK: - IBActions
+    
+    @objc private func doneActionKeyBoard() {
+        doneToolBarAction?()
+    }
+    
     @IBAction private func submitButtonAction(_ sender: Any) {
         submitButtonAction?()
     }

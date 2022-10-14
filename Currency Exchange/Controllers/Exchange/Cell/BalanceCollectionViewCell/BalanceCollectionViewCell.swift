@@ -10,7 +10,12 @@ import UIKit
 class BalanceCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Properties
-    @IBOutlet private weak var maxWidthConstraint: NSLayoutConstraint!
+    @IBOutlet private var maxWidthConstraint: NSLayoutConstraint! {
+        didSet {
+            maxWidthConstraint.isActive = false
+        }
+    }
+    
     @IBOutlet private weak var titleLabel: UILabel!
     
     private var maxWidth: CGFloat? = nil {

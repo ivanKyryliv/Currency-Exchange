@@ -16,4 +16,16 @@ extension UITextField {
         rightView = iconContainerView
         rightViewMode = .always
     }
+    
+    func setupToolBarFor(action: Selector, and buttonTitle: String, target: Any? = nil) {
+        let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 32))
+        toolBar.barStyle = .default
+        let button = UIBarButtonItem(title: buttonTitle,
+                                         style: .done, target: target, action: action)
+        button.tintColor = .black
+        let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        toolBar.items = [space, button]
+        toolBar.sizeToFit()
+        inputAccessoryView = toolBar
+    }
 }
