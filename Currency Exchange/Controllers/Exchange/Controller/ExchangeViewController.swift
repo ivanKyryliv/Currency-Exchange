@@ -21,7 +21,7 @@ class ExchangeViewController: BaseViewController {
     
     var conversionPercent: Double = 0.7
     var conversionsCount: Int = 1
-    var conversionResponce: CurrencyModelProtocol?
+    var conversionResponse: CurrencyModelProtocol?
     
     var myBalances: [CurrencyModelProtocol] {
         didSet {
@@ -65,7 +65,7 @@ class ExchangeViewController: BaseViewController {
     private func currentConversionData() -> CurrencyOperation {
         return CurrencyOperation(myBalances: myBalances,
                                  conversionPercent: conversionPercent,
-                                 conversionResponce: conversionResponce,
+                                 conversionResponse: conversionResponse,
                                  conversionsCount: conversionsCount,
                                  freeConversionCount: freeConversionCount,
                                  conversionFrom: conversionFrom,
@@ -161,7 +161,7 @@ class ExchangeViewController: BaseViewController {
     }
     
     private func configureConversionResponse(result: CurrencyModelProtocol) {
-        conversionResponce = CurrencyApiModel(amount: result.amount, currency: result.currency)
+        conversionResponse = CurrencyApiModel(amount: result.amount, currency: result.currency)
         conversionsCount += 1
         rootView?.receiveCurrencyAmountLabel.text = "+ \(result.amount)"
         

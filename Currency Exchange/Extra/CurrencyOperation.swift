@@ -14,7 +14,7 @@ class CurrencyOperation: CurrencyOperationProtocol {
     var freeConversionCount: Int
     var conversionFrom: CurrencyModelProtocol
     var conversionTo: CurrencyType
-    var conversionResponce: CurrencyModelProtocol?
+    var conversionResponse: CurrencyModelProtocol?
     
     var calculateCommission: CurrencyModelProtocol {
         if conversionsCount > freeConversionCount, conversionFrom.amount > 0  {
@@ -27,14 +27,14 @@ class CurrencyOperation: CurrencyOperationProtocol {
     
     init(myBalances: [CurrencyModelProtocol],
          conversionPercent: Double,
-         conversionResponce: CurrencyModelProtocol?,
+         conversionResponse: CurrencyModelProtocol?,
          conversionsCount: Int,
          freeConversionCount: Int,
          conversionFrom: CurrencyModelProtocol,
          conversionTo: CurrencyType) {
         self.myBalances = myBalances
         self.conversionPercent = conversionPercent
-        self.conversionResponce = conversionResponce
+        self.conversionResponse = conversionResponse
         self.conversionsCount = conversionsCount
         self.freeConversionCount = freeConversionCount
         self.conversionFrom = conversionFrom
@@ -66,7 +66,7 @@ class CurrencyOperation: CurrencyOperationProtocol {
         guard let myBalanceToCurrency = myBalances.filter({$0.currency == conversionTo}).first?.amount else {
             return 0
         }
-        let conversionResponce = conversionResponce?.amount ?? 0.0
+        let conversionResponce = conversionResponse?.amount ?? 0.0
         return myBalanceToCurrency + conversionResponce
     }
     
@@ -83,7 +83,7 @@ class CurrencyOperation: CurrencyOperationProtocol {
     }
     
     func successMessage() -> String? {
-        guard let conversionResponce = conversionResponce else { return nil }
+        guard let conversionResponce = conversionResponse else { return nil }
         var message = String.localizedStringWithFormat(Localized.youHaveConverted, conversionFrom.toString(), conversionResponce.toString())
         
         if calculateCommission.amount > 0 {

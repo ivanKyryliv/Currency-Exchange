@@ -17,7 +17,6 @@
 		2C44C1D028F563D90039BE7F /* UIView + Additional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C44C1CF28F563D90039BE7F /* UIView + Additional.swift */; };
 		2C44C1D228F57CEA0039BE7F /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C44C1D128F57CEA0039BE7F /* BaseView.swift */; };
 		2C7752BC28F430C800045A77 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7752BB28F430C800045A77 /* AppDelegate.swift */; };
-		2C7752C028F430C800045A77 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7752BF28F430C800045A77 /* ViewController.swift */; };
 		2C7752C528F430CC00045A77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C7752C428F430CC00045A77 /* Assets.xcassets */; };
 		2C7752C828F430CC00045A77 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2C7752C628F430CC00045A77 /* LaunchScreen.storyboard */; };
 		2C7752E428F44A4000045A77 /* ExchangeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7752E228F44A4000045A77 /* ExchangeViewController.swift */; };
@@ -70,7 +69,6 @@
 		2C44C1D128F57CEA0039BE7F /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		2C7752B828F430C800045A77 /* Exchange.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Exchange.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C7752BB28F430C800045A77 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		2C7752BF28F430C800045A77 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		2C7752C428F430CC00045A77 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2C7752C728F430CC00045A77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2C7752C928F430CC00045A77 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -177,7 +175,6 @@
 				2C77530328F45C3B00045A77 /* Extra */,
 				2C7752D328F43E4900045A77 /* Extensions */,
 				2C7752D428F43E5D00045A77 /* Resourses */,
-				2C7752BF28F430C800045A77 /* ViewController.swift */,
 				2C7752C628F430CC00045A77 /* LaunchScreen.storyboard */,
 				2C7752C928F430CC00045A77 /* Info.plist */,
 			);
@@ -503,7 +500,6 @@
 				2C44C1D228F57CEA0039BE7F /* BaseView.swift in Sources */,
 				2C77530828F45F8E00045A77 /* Localized.swift in Sources */,
 				2C7752E928F44AE700045A77 /* NavigationService.swift in Sources */,
-				2C7752C028F430C800045A77 /* ViewController.swift in Sources */,
 				2C7EC23F28F5A855008EE2A7 /* UITextField + Additional.swift in Sources */,
 				2C0FE88128FC68E800354797 /* CurrencyConversionsProtocol.swift in Sources */,
 				2C44C1D028F563D90039BE7F /* UIView + Additional.swift in Sources */,

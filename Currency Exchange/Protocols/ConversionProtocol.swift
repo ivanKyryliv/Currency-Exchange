@@ -10,7 +10,7 @@ import Foundation
 protocol ConversionProtocol {
     var myBalances: [CurrencyModelProtocol] { get set }
     var conversionFrom: CurrencyModelProtocol { get }
-    var conversionResponce: CurrencyModelProtocol? { get set }
+    var conversionResponse: CurrencyModelProtocol? { get set }
     var conversionTo: CurrencyType { get }
     var conversionPercent: Double { get set }
     var conversionsCount: Int { get set }
