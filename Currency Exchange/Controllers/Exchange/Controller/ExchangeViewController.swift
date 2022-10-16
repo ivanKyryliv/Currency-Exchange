@@ -8,71 +8,27 @@
 import UIKit
 import MBProgressHUD
 
-protocol CurrencySelectable {
-    var fromAmount: Double { get }
-    var fromCurrency: CurrencyType { get }
-    var toCurrency: CurrencyType { get }
-    var myBalances: [CurrencyType: Double] { get set }
-    var supportCurrenciesType: [CurrencyType] { get set }
-    var currencyConversionPercent: Double { get set }
-    var currencyConversionsCount: Int { get set }
-    var freeConversionCount: Int { get }
-}
-
-protocol Conversions {
-    func currencyConversion(fromAmount: Double,
-                            fromCurrency: CurrencyType,
-                            toCurrency: CurrencyType,
-                            completionHandler: @escaping (_ result: CurrencyConverterApiModel?, _ errorMessage: String?) -> Void)
-}
-
-struct ConversionResult: Conversions {
-    func currencyConversion(fromAmount: Double,
-                            fromCurrency: CurrencyType,
-                            toCurrency: CurrencyType,
-                            completionHandler: @escaping (CurrencyConverterApiModel?, String?) -> Void) {
-        
-        let currencyRequest = CurrencyRequest(fromAmount: fromAmount,
-                                              fromCurrency: fromCurrency,
-                                              toCurrency: toCurrency)
-        
-        let fetchConversions = FetchConversions(currencyRequest: currencyRequest)
-        
-        NetworkService.shared.performApiRequest(fetchConversions) {
-            (result: Result<ApiResponse<CurrencyConverterApiModel>>) in
-            switch result {
-            case .success(let response):
-                completionHandler(response.entity, nil)
-            case let .failure(error):
-                completionHandler(nil, error.errorMessage)
-            }
-        }
-    }
-}
-
 class ExchangeViewController: BaseViewController {
     
     //MARK: - Local Constants
     private struct LocalConstants {
-        static let defaulMyBalances: [CurrencyType: Double] = [CurrencyType.EUR: 1000.00,
-                                                               CurrencyType.USD: 0.00,
-                                                               CurrencyType.JPY: 0]
         static let maxConversionValueDigits = 7
     }
     
     //MARK: - Properties
-    private let conversionResult = ConversionResult()
+    private let conversionResult: CurrencyConversionsProtocol
+    private let conversionService: ConversionService
     
-    var myBalances: [CurrencyType: Double] = LocalConstants.defaulMyBalances
-    var currencyConversionPercent = 0.7
-    var currencyConversionsCount = 1
-    var supportCurrenciesType: [CurrencyType] = [.EUR, .USD, .JPY]
+    var conversionPercent: Double = 0.7
+    var conversionsCount: Int = 1
+    var conversionResponce: CurrencyModelProtocol?
     
-    private var getConversionCommission: Double {
-        if currencyConversionsCount > freeConversionCount {
-            return (fromAmount / 100 * currencyConversionPercent)
+    var myBalances: [CurrencyModelProtocol] {
+        didSet {
+            DispatchQueue.main.async {
+                self.rootView?.collectionView.reloadData()
+            }
         }
-        return 0.0
     }
     
     //MARK: - Lifecycle
@@ -85,13 +41,35 @@ class ExchangeViewController: BaseViewController {
         rootView?.addKeyboardNotificationObservers()
         configureSellPickerView()
         configureReceivePickerView()
-        rootView?.sellCurrencyAmountTextField.text = "100.00"
-        rootView?.sellCurrencyAmountTextField?.becomeFirstResponder()
+        rootView?.openKeyboard()
+    }
+    
+    init(conversionResult: CurrencyConversionsProtocol,
+         conversionService: ConversionService,
+         myBalances: [CurrencyModelProtocol]) {
+        self.conversionResult = conversionResult
+        self.conversionService = conversionService
+        self.myBalances = myBalances
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     private func configureCollectionView() {
         rootView?.collectionView.delegate = self
         rootView?.collectionView.dataSource = self
+    }
+    
+    private func currentConversionData() -> CurrencyOperation {
+        return CurrencyOperation(myBalances: myBalances,
+                                 conversionPercent: conversionPercent,
+                                 conversionResponce: conversionResponce,
+                                 conversionsCount: conversionsCount,
+                                 freeConversionCount: freeConversionCount,
+                                 conversionFrom: conversionFrom,
+                                 conversionTo: conversionTo)
     }
     
     private func validateCurrencyFrom(textField: UITextField, range: NSRange, string: String) -> Bool {
@@ -112,86 +90,86 @@ class ExchangeViewController: BaseViewController {
         return updatedText.isValidDouble(maxDecimalPlaces: 2, maxDigits: LocalConstants.maxConversionValueDigits)
     }
     
-    private func showCurrencyConvertedAlert(resultAmount: String) {
-        let fromAmountString = fromAmount.stringValueFrom(type: fromCurrency)
-        var message = String.localizedStringWithFormat(Localized.youHaveConverted,
-                                                       "\(fromAmountString) \(fromCurrency.rawValue)",
-                                                       "\(resultAmount) \(toCurrency.rawValue)")
+    func validateTextFieldDidEndEditingFrom(type: CurrencyType, balance: Double) -> String {
         
-        if getConversionCommission > 0 {
+        switch type {
+        case .JPY:
+            let value = Int(balance)
+            return "\(value)"
+        case .EUR, .USD:
+            let formatter = NumberFormatter()
+            formatter.allowsFloats = true
+            let decimalSeparator = formatter.decimalSeparator ?? "."
+            let result = String(balance)
+            let split = result.components(separatedBy: decimalSeparator)
             
-            var conversionCommissionString = getConversionCommission.stringValueFrom(type: fromCurrency)
-            
-            if fromCurrency == .JPY && getConversionCommission < 1 {
-                conversionCommissionString = getConversionCommission.stringValue2f()
+            switch split.count {
+            case 1:
+                return "\(result).00"
+            case 2:
+                if split.last?.count == 0 {
+                    return "\(result)00"
+                } else if split.last?.count == 1 {
+                    return "\(result)0"
+                }
+            default:
+                break
             }
-            
-            message.append(" \(Localized.commissionFee) \(conversionCommissionString) \(fromCurrency).")
         }
         
-        showAlertWith(message: message,
-                      title: Localized.currencyConverted) { _ in
-            self.calculateMyBalances(resultAmount: resultAmount)
-        }
+        return String(balance)
     }
     
     private func setupActions() {
         
         rootView?.doneToolBarAction = { [unowned self] in
-            self.rootView?.sellCurrencyAmountTextField?.resignFirstResponder()
+            self.rootView?.closeKeyboard()
         }
         
         rootView?.submitButtonAction = { [unowned self] in
             
-            if fromCurrency == toCurrency {
+            if conversionFrom.currency == conversionTo {
+                showAlertWith(message: Localized.pleaseChangeCurrency)
                 return
             }
             
-            if fromAmount == 0 {
-                return showAlertWith(message: Localized.pleaseEnterValue)
-            }
+            let operation = conversionService.isOperationValid(currentConversionData())
             
-            if let fromCurrencyMyBalance = myBalances[fromCurrency],
-               fromCurrencyMyBalance - fromAmount - getConversionCommission < 0 {
-                return showAlertWith(message: Localized.notEnoughMoneyConversion)
+            if !operation.isValid, let errorMessage = operation.error {
+                return showAlertWith(message: errorMessage)
             }
             
             rootView?.sellCurrencyAmountTextField?.resignFirstResponder()
             
             MBProgressHUD.showAdded(to: view, animated: true)
-            conversionResult.currencyConversion(fromAmount: fromAmount,
-                                                fromCurrency: fromCurrency,
-                                                toCurrency: toCurrency) {
-                [weak self] resultConverion, errorMessage in
+            conversionResult.currencyConversion(fromAmount: conversionFrom.amount,
+                                                fromCurrency: conversionFrom.currency,
+                                                toCurrency: conversionTo) {
+                [weak self] resultConversion, errorMessage in
                 guard let strongSelf = self else { return }
                 MBProgressHUD.hide(for: strongSelf.view, animated: true)
                 
                 if let errorMessage = errorMessage {
                     ErrorService.showError(message: errorMessage)
                 } else {
-                    if let result = resultConverion {
-                        strongSelf.showCurrencyConvertedAlert(resultAmount: result.amount)
+                    if let result = resultConversion {
+                        strongSelf.configureConversionResponse(result: result)
                     }
                 }
             }
         }
     }
     
-    private func calculateMyBalances(resultAmount: String) {
-        currencyConversionsCount += 1
+    private func configureConversionResponse(result: CurrencyModelProtocol) {
+        conversionResponce = CurrencyApiModel(amount: result.amount, currency: result.currency)
+        conversionsCount += 1
+        rootView?.receiveCurrencyAmountLabel.text = "+ \(result.amount)"
         
-        rootView?.receiveCurrencyAmountLabel.text = "+ \(resultAmount)"
+        let newBalances = conversionService.newBalancesAfterConversion(currentConversionData())
+        myBalances = newBalances
         
-        if let fromCurrencyMyBalance = myBalances[fromCurrency] {
-            myBalances[fromCurrency] = (fromCurrencyMyBalance - fromAmount - getConversionCommission)
-        }
-        
-        if let toCurrencyMyBalance = myBalances[toCurrency], let amount = Double(resultAmount) {
-            myBalances[toCurrency] = (toCurrencyMyBalance + amount)
-        }
-        
-        DispatchQueue.main.async {
-            self.rootView?.collectionView.reloadData()
+        if let message: String = conversionService.showSuccessMessage(currentConversionData()) {
+            showAlertWith(message: message, title: Localized.currencyConverted)
         }
     }
 }
@@ -206,12 +184,12 @@ extension ExchangeViewController: UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         guard let text = textField.text else { return }
-        guard fromCurrency != .JPY else { return }
-        textField.text = validateCurrencyFormatFrom(type: fromCurrency, balance: Double(text) ?? 0.00)
+        guard conversionFrom.currency != .JPY else { return }
+        textField.text = validateTextFieldDidEndEditingFrom(type: conversionFrom.currency, balance: Double(text) ?? 0.00)
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        if fromCurrency == .JPY {
+        if conversionFrom.currency == .JPY {
             textField.keyboardType = .numberPad
         } else {
             textField.keyboardType = .decimalPad
@@ -244,46 +222,18 @@ extension ExchangeViewController: SelectedCurrencyTypeDelegate {
     
     func didSelect(type: CurrencyType, exchangeType: ExchangeType) {
         rootView?.receiveCurrencyAmountLabel.text = nil
+        
         switch exchangeType {
         case .sell:
             rootView?.fromCurrencyTextField.text = type.rawValue
             rootView?.fromCurrencyTextField.resignFirstResponder()
             if type == .JPY {
-                rootView?.sellCurrencyAmountTextField.text = String(Int(fromAmount))
+                rootView?.sellCurrencyAmountTextField.text = String(Int(conversionFrom.amount))
             }
         case .receive:
             rootView?.toCurrencyTextField.text = type.rawValue
             rootView?.toCurrencyTextField.resignFirstResponder()
         }
-    }
-}
-
-//MARK: - SelectedCurrencyTypeDelegate
-extension ExchangeViewController: CurrencySelectable {
-    var freeConversionCount: Int {
-        return 5
-    }
-    
-    var fromAmount: Double {
-        let defaultAmount = 0.00
-        guard let amountString = rootView?.sellCurrencyAmountTextField.text else { return defaultAmount }
-        return Double(amountString) ?? defaultAmount
-    }
-    
-    var fromCurrency: CurrencyType {
-        if let fromCurrencyTextField = rootView?.fromCurrencyTextField.text,
-           let currency = CurrencyType(rawValue: fromCurrencyTextField) {
-            return currency
-        }
-        return .EUR
-    }
-    
-    var toCurrency: CurrencyType {
-        if let toCurrencyTextField = rootView?.toCurrencyTextField.text,
-           let currency = CurrencyType(rawValue: toCurrencyTextField) {
-            return currency
-        }
-        return .USD
     }
 }
 
@@ -297,49 +247,36 @@ extension ExchangeViewController: UICollectionViewDataSource, UICollectionViewDe
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueCellWithClass(BalanceCollectionViewCell.self, path: indexPath)
-        let balanceString = configureMyBalancesFrom(type: supportCurrenciesType[indexPath.row])
-        cell.configure(title: balanceString, maxWidth: collectionView.bounds.width)
+        let balance = myBalances[indexPath.row].toString()
+        cell.configure(title: balance, maxWidth: collectionView.bounds.width)
         return cell
     }
 }
 
-extension ExchangeViewController {
+//MARK: - ConversionProtocol
+extension ExchangeViewController: ConversionProtocol {
     
-    private func configureMyBalancesFrom(type: CurrencyType) -> String {
-        if let balance = myBalances[type] {
-            return "\(balance.stringValueFrom(type: type)) \(type)"
-        }
-        
-        return "\(0.00.stringValueFrom(type: type)) \(type)"
+    var freeConversionCount: Int {
+        return 5
     }
     
-    func validateCurrencyFormatFrom(type: CurrencyType, balance: Double) -> String {
+    var conversionFrom: CurrencyModelProtocol {
+        let ammount: Double = Double(rootView?.sellCurrencyAmountTextField.text ?? "0")  ?? 0
+        var currency: CurrencyType = .EUR
         
-        switch type {
-        case .JPY:
-            let value = Int(balance)
-            return "\(value)"
-        case .EUR, .USD:
-            let formatter = NumberFormatter()
-            formatter.allowsFloats = true
-            let decimalSeparator = formatter.decimalSeparator ?? "."
-            let result = String(balance)
-            let split = result.components(separatedBy: decimalSeparator)
-            
-            switch split.count {
-            case 1:
-                return "\(result).00"
-            case 2:
-                if split.last?.count == 0 {
-                    return "\(result)00"
-                } else if split.last?.count == 1 {
-                    return "\(result)0"
-                }
-            default:
-                break
-            }
+        if let fromCurrencyTextField = rootView?.fromCurrencyTextField.text,
+           let currencyType = CurrencyType(rawValue: fromCurrencyTextField) {
+            currency = currencyType
         }
         
-        return String(balance)
+        return CurrencyApiModel(amount: ammount, currency: currency)
+    }
+    
+    var conversionTo: CurrencyType {
+        if let toCurrencyTextField = rootView?.toCurrencyTextField.text,
+           let currency = CurrencyType(rawValue: toCurrencyTextField) {
+            return currency
+        }
+        return .USD
     }
 }

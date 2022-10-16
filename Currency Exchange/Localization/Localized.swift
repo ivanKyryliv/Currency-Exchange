@@ -69,4 +69,7 @@ enum Localized {
         return "CommissionFee".localized
     }
     
+    static var pleaseChangeCurrency: String {
+        return "PleaseChangeCurrency".localized
+    }
 }

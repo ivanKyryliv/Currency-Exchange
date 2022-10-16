@@ -22,4 +22,5 @@
 "NotEnoughMoneyConversion" = "Currency cannot be converted. There is not enough money to make the conversion";
 "YouHaveConverted" = "You have converted %@ to %@.";
 "CommissionFee" = "Commission Fee -";
+"PleaseChangeCurrency" = "Please change currency";
 

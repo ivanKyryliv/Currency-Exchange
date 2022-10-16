@@ -12,7 +12,7 @@ class BaseView: UIView {
     var activeScrollView: UIScrollView?
     
     //MARK: - Keyboard settings
-     func addKeyboardNotificationObservers(){
+     func addKeyboardNotificationObservers() {
          let notificationCenter = NotificationCenter.default
          notificationCenter.addObserver(self, selector: #selector(setUpKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
          notificationCenter.addObserver(self, selector: #selector(setUpKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)

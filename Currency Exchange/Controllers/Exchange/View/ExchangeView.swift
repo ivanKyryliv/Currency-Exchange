@@ -116,6 +116,14 @@ class ExchangeView: BaseView {
         sellCurrencyAmountTextField?.setupToolBarFor(action: #selector(doneActionKeyBoard), and: Localized.done)
     }
     
+    func openKeyboard() {
+        sellCurrencyAmountTextField?.becomeFirstResponder()
+    }
+    
+    func closeKeyboard() {
+        sellCurrencyAmountTextField?.resignFirstResponder()
+    }
+    
     //MARK: - IBActions
     
     @objc private func doneActionKeyBoard() {
